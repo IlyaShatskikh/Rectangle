@@ -38,7 +38,7 @@ public class Main {
         }
 
         String inputFile = args[0];
-        String outputFile = args[1];
+        //String outputFile = args[1];
 
         Integer[] rectangle = new Integer[COORDINATE_COUNT];
         List<Integer[]> rectangleList = new LinkedList<Integer[]>();
