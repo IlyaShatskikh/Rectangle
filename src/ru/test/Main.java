@@ -5,8 +5,11 @@ package ru.test;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @author Ilya Shatskikh (Ilya.Shackih@ocrv.ru)
@@ -14,22 +17,33 @@ import java.util.List;
  */
 public class Main {
 
+    private final static String FILE_TYPE = ".txt";
+    private final static int ARGS_COUNT = 2;
+    private final static int LINE_MAX = 100;
+    private final static int ABSOLUTE_MAX = 10000;
+    private final static int COORDINATE_COUNT = 4;
+    private final static int X1 = 0;
+    private final static int Y1 = 1;
+    private final static int X2 = 2;
+    private final static int Y2 = 3;
+
     public static void main(String[] args) {
 
-        final int parCount = 2;
-        String fileType = ".txt";
-
-        if (args.length != parCount) {
+        if (args.length != ARGS_COUNT) {
             System.out.println("Please, use two parameters: 1) input text file; 2) output text file.");
         }
 
-        if (!args[0].endsWith(fileType) || !args[1].endsWith(fileType)) {
+        if (!args[0].endsWith(FILE_TYPE) || !args[1].endsWith(FILE_TYPE)) {
             System.out.println("Use only txt file format");
         }
 
         String inputFile = args[0];
+        String outputFile = args[1];
 
-        List<Integer[]> rect = new ArrayList<Integer[]>();
+        Integer[] rectangle = new Integer[COORDINATE_COUNT];
+        List<Integer[]> rectangleList = new LinkedList<Integer[]>();
+        SortedSet<Integer> abscissaSet = new TreeSet<Integer>();
+        SortedSet<Integer> ordinateSet = new TreeSet<Integer>();
 
         try (BufferedReader out = new BufferedReader(new FileReader(inputFile))) {
             String line = null;
@@ -37,41 +51,73 @@ public class Main {
             while ((line = out.readLine()) != null) {
 
                 lineCount += 1;
-                if (lineCount > 100) {
+                if (lineCount > LINE_MAX) {
                     throw new IllegalArgumentException("The number of lines should be no more than 100");
                 }
 
                 String[] strCoordinates = line.split("\\s+");
 
-                if (strCoordinates.length > 4) {
+                if (strCoordinates.length > COORDINATE_COUNT) {
                     throw new IllegalArgumentException("Use only 4 numbers");
                 }
 
-                int x1 = Integer.parseInt(strCoordinates[0]);
-                int y1 = Integer.parseInt(strCoordinates[1]);
-                int x2 = Integer.parseInt(strCoordinates[2]);
-                int y2 = Integer.parseInt(strCoordinates[3]);
+                rectangle[X1] = Integer.parseInt(strCoordinates[X1]);
+                rectangle[Y1] = Integer.parseInt(strCoordinates[Y1]);
+                rectangle[X2] = Integer.parseInt(strCoordinates[X2]);
+                rectangle[Y2] = Integer.parseInt(strCoordinates[Y2]);
 
-                if (Math.abs(x1) > 10000 || Math.abs(y1) > 10000 || Math.abs(x2) > 10000 || Math.abs(y2) > 10000) {
+                if (Math.abs(rectangle[X1]) > ABSOLUTE_MAX || Math.abs(rectangle[Y1]) > ABSOLUTE_MAX || Math.abs(rectangle[X2]) > ABSOLUTE_MAX || Math.abs(rectangle[Y2]) > ABSOLUTE_MAX) {
                     throw new IllegalArgumentException("Numbers must be not greater than 10000 by absolute value");
                 }
 
-                if (x1 > x2) {
-                    x1 = x1 + x2;
-                    x2 = x1 - x2;
-                    x1 = x1 - x2;
+                if (rectangle[X1] > rectangle[X2]) {
+                    swap(rectangle, X1, X2);
                 }
 
-                if (y1 > y2) {
-                    y1 = y1 + y2;
-                    y2 = y1 - y2;
-                    y1 = y1 - y2;
+                if (rectangle[Y1] > rectangle[Y2]) {
+                    swap(rectangle, Y1, Y2);
                 }
+
+                abscissaSet.add(rectangle[X1]);
+                abscissaSet.add(rectangle[Y1]);
+                ordinateSet.add(rectangle[X2]);
+                ordinateSet.add(rectangle[Y2]);
+
+                rectangleList.add(rectangle);
 
             }
 
-        } catch (Exception e) {
-
+        } catch (IllegalArgumentException | IOException e) {
+            System.out.println(e.getMessage());
         }
+
+        Integer totalArea;
+        Integer[] curRect = new Integer[COORDINATE_COUNT];
+
+        for (Integer i: abscissaSet) {
+            for (Integer j: ordinateSet) {
+                if (i != j) {
+                    curRect[X1] = i;
+                    curRect[Y1] = j;
+                    curRect[X1] = i;
+                    curRect[Y1] = j;
+                    for (int k = 0; k < rectangleList.size(); k++) {
+
+                    }
+                }
+            }
+        }
+    }
+
+    private static void swap(Integer[] value, int i, int j) {
+
+        Integer x = value[i];
+        value[i] = value[j];
+        value[j] = x;
+    }
+
+    private static boolean include(Integer[] outer, Integer[] inner) {
+
+        return true;
     }
 }
