@@ -56,17 +56,17 @@ public class Main {
                     throw new IllegalArgumentException("The number of lines should be no more than 100");
                 }
 
-                String[] strCoordinates = line.split("\\s+");
+                String[] lineCoordArray = line.split("\\s+");
 
-                if (strCoordinates.length > COORDINATE_COUNT) {
+                if (lineCoordArray.length > COORDINATE_COUNT) {
                     throw new IllegalArgumentException("Use only 4 numbers");
                 }
 
                 Integer[] rectangle = new Integer[COORDINATE_COUNT];
-                rectangle[X1] = Integer.parseInt(strCoordinates[X1]);
-                rectangle[Y1] = Integer.parseInt(strCoordinates[Y1]);
-                rectangle[X2] = Integer.parseInt(strCoordinates[X2]);
-                rectangle[Y2] = Integer.parseInt(strCoordinates[Y2]);
+                rectangle[X1] = Integer.parseInt(lineCoordArray[X1]);
+                rectangle[Y1] = Integer.parseInt(lineCoordArray[Y1]);
+                rectangle[X2] = Integer.parseInt(lineCoordArray[X2]);
+                rectangle[Y2] = Integer.parseInt(lineCoordArray[Y2]);
 
                 if (Math.abs(rectangle[X1]) > ABSOLUTE_MAX || Math.abs(rectangle[Y1]) > ABSOLUTE_MAX
                                 || Math.abs(rectangle[X2]) > ABSOLUTE_MAX || Math.abs(rectangle[Y2]) > ABSOLUTE_MAX) {
@@ -93,18 +93,18 @@ public class Main {
             System.exit(1);
         }
 
-        Object[] abscissa = abscissaSet.toArray();
-        Object[] ordinate = ordinateSet.toArray();
+        Object[] abscissaList = abscissaSet.toArray();
+        Object[] ordinateList = ordinateSet.toArray();
 
         Integer[] curRect = new Integer[COORDINATE_COUNT];
         long totalArea = 0;
 
-        for (int i = 0; i < abscissa.length - 1; i++) {
-            for (int j = 0; j < ordinate.length - 1; j++) {
-                curRect[X1] = (Integer) abscissa[i];
-                curRect[Y1] = (Integer) ordinate[j];
-                curRect[X2] = (Integer) abscissa[i + 1];
-                curRect[Y2] = (Integer) ordinate[j + 1];
+        for (int i = 0; i < abscissaList.length - 1; i++) {
+            for (int j = 0; j < ordinateList.length - 1; j++) {
+                curRect[X1] = (Integer) abscissaList[i];
+                curRect[Y1] = (Integer) ordinateList[j];
+                curRect[X2] = (Integer) abscissaList[i + 1];
+                curRect[Y2] = (Integer) ordinateList[j + 1];
 
                 for (Integer[] rect: rectangleList) {
                     if (isInclude(rect, curRect)) {
