@@ -12,7 +12,7 @@ import java.util.TreeSet;
 
 /**
  * Square of the figure formed by the union of the rectangles.
- * The algorithm - Okulov "Programming in algorithms".
+ * Algorithm - Okulov "Programming in algorithms".
  * @author Ilya Shatskikh (Ilya.Shackih@ocrv.ru)
  *
  */
@@ -93,15 +93,19 @@ public class Main {
             System.exit(1);
         }
 
-        Integer totalArea = 0;
+        Object[] abscissa = abscissaSet.toArray();
+        Object[] ordinate = ordinateSet.toArray();
 
-        for (int i = abscissaSet.first(); i < abscissaSet.last(); i++) {
-            for (int j = ordinateSet.first(); j < ordinateSet.last(); j++) {
-                Integer[] curRect = new Integer[COORDINATE_COUNT];
-                curRect[X1] = i;
-                curRect[Y1] = j;
-                curRect[X2] = i + 1;
-                curRect[Y2] = j + 1;
+        Integer[] curRect = new Integer[COORDINATE_COUNT];
+        long totalArea = 0;
+
+        for (int i = 0; i < abscissa.length - 1; i++) {
+            for (int j = 0; j < ordinate.length - 1; j++) {
+                curRect[X1] = (Integer) abscissa[i];
+                curRect[Y1] = (Integer) ordinate[j];
+                curRect[X2] = (Integer) ordinate[i + 1];
+                curRect[Y2] = (Integer) ordinate[j + 1];
+
                 for (Integer[] rect: rectangleList) {
                     if (isInclude(rect, curRect)) {
                         totalArea += square(curRect);
@@ -112,7 +116,7 @@ public class Main {
         }
 
         try (FileWriter fw = new FileWriter(new File(outputFile))) {
-            fw.write(totalArea.toString());
+            fw.write(Long.toString(totalArea));
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.exit(1);
