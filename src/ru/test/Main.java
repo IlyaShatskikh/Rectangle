@@ -103,7 +103,7 @@ public class Main {
             for (int j = 0; j < ordinate.length - 1; j++) {
                 curRect[X1] = (Integer) abscissa[i];
                 curRect[Y1] = (Integer) ordinate[j];
-                curRect[X2] = (Integer) ordinate[i + 1];
+                curRect[X2] = (Integer) abscissa[i + 1];
                 curRect[Y2] = (Integer) ordinate[j + 1];
 
                 for (Integer[] rect: rectangleList) {
